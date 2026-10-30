@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://stdsk99.github.io/navadara/sitemap.xml

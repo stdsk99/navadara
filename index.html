@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นวดารา — เปิดไพ่ทาโร่ออนไลน์ ฟรี</title>
+<meta name="description" content="นวดารา เว็บเปิดไพ่ทาโร่ออนไลน์ฟรี ดูไพ่ประจำวัน เลือกหมวดความรัก การงาน การเงิน สุขภาพ พร้อมคำทำนายภาษาไทยทั้งไพ่ตั้งและไพ่กลับหัว">
+<link rel="canonical" href="https://stdsk99.github.io/navadara/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="นวดารา">
+<meta property="og:title" content="นวดารา — เปิดไพ่ทาโร่ออนไลน์ ฟรี">
+<meta property="og:description" content="นวดารา เว็บเปิดไพ่ทาโร่ออนไลน์ฟรี ดูไพ่ประจำวัน เลือกหมวดความรัก การงาน การเงิน สุขภาพ พร้อมคำทำนายภาษาไทยทั้งไพ่ตั้งและไพ่กลับหัว">
+<meta property="og:url" content="https://stdsk99.github.io/navadara/">
+<meta property="og:image" content="https://stdsk99.github.io/navadara/decks/placeholder/back.svg">
+<meta property="og:locale" content="th_TH">
+<meta name="theme-color" content="#0d1222">
+<link rel="icon" href="/navadara/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500&family=Noto+Serif+Thai:wght@500&display=swap">
+<link rel="stylesheet" href="/navadara/assets/css/style.css?v=mvv5u9c5">
+<style>:root{--back:url("/navadara/decks/placeholder/back.svg")}</style>
+<script>window.NAVA={"base":"/navadara/","deck":{"folder":"placeholder","ext":"svg"},"gaId":"","adsEnabled":false};</script>
+</head>
+<body>
+<a class="sr-only" href="#main">ข้ามไปเนื้อหา</a>
+<header class="site-header"><div class="wrap">
+<a class="brand" href="/navadara/"><svg viewBox="0 0 24 24" aria-hidden="true" fill="#c9a96e"><polygon points="12,1 13.8,8.6 20.5,4.9 15.6,10.8 23,12 15.6,13.2 20.5,19.1 13.8,15.4 12,23 10.2,15.4 3.5,19.1 8.4,13.2 1,12 8.4,10.8 3.5,4.9 10.2,8.6"/></svg><span>นวดารา</span></a>
+<nav class="nav" aria-label="เมนูหลัก"><a href="/navadara/" aria-current="page">เปิดไพ่</a><a href="/navadara/cards/">ความหมายไพ่</a><button class="icon-btn" type="button" data-sound-toggle aria-pressed="false" aria-label="เปิดเสียง"><svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="display:none"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button></nav>
+</div></header>
+<main id="main" class="wrap">
+<section class="hero">
+<h1>นวดารา</h1>
+<p>ตั้งจิตให้สงบ นึกถึงสิ่งที่อยากรู้ แล้วเลือกไพ่ที่ดึงดูดใจคุณ</p>
+</section>
+<section class="panel" id="reader" aria-label="เปิดไพ่">
+<div id="step-setup">
+<label class="field" style="margin-top:0">รูปแบบการเปิดไพ่</label>
+<div class="spread-list" id="spreads"></div>
+<label class="field">หมวดคำถาม</label>
+<div class="chips" id="cats"></div>
+<label class="field" for="question">คำถามของคุณ (ไม่บังคับ)</label>
+<textarea id="question" maxlength="200" placeholder="เช่น ช่วงนี้ควรโฟกัสเรื่องอะไร"></textarea>
+<p class="muted small" style="margin-top:6px">คำถามเก็บไว้ในเครื่องของคุณเท่านั้น ไม่ถูกส่งไปที่ใด</p>
+<div class="actions"><button class="btn" id="btn-shuffle" type="button" disabled>สับไพ่</button></div>
+<p class="today-note muted" id="today-note"></p>
+</div>
+<div id="step-table" hidden>
+<div class="stage" id="stage"></div>
+<p class="stage-msg" id="stage-msg" aria-live="polite"></p>
+</div>
+<div id="step-result" hidden><div id="result"></div></div>
+</section>
+<div class="ad-slot" data-slot="home-bottom"></div>
+<section class="prose">
+<h2>ไพ่ทาโร่บอกอะไรเรา</h2>
+<p>ไพ่ทาโร่เป็นเครื่องมือช่วยสะท้อนความคิดและมองสถานการณ์จากมุมใหม่ ไพ่แต่ละใบมีภาพและสัญลักษณ์ที่ชวนให้เราทบทวนสิ่งที่กำลังเผชิญ ไพ่ที่ออกมาแบบกลับหัวมักหมายถึงพลังของไพ่ใบนั้นที่ติดขัด ล่าช้า หรือหันเข้าหาตัวเอง</p>
+<p>ตอนนี้นวดารามีไพ่ Major Arcana ครบ 22 ใบ และกำลังทยอยเพิ่ม Minor Arcana อีก 56 ใบ รวมถึงรูปแบบการเปิดไพ่แบบ 3 ใบ ความรัก และ Celtic Cross <a href="/navadara/cards/">อ่านความหมายไพ่ทุกใบ</a></p>
+</section>
+</main>
+<footer class="site-footer"><div class="wrap">
+<span>© 2026 นวดารา · คำทำนายเพื่อความบันเทิง</span>
+<nav aria-label="ลิงก์ท้ายเว็บ"><a href="/navadara/cards/">ความหมายไพ่</a><a href="/navadara/disclaimer/">ข้อจำกัดความรับผิดชอบ</a><a href="/navadara/privacy/">นโยบายความเป็นส่วนตัว</a></nav>
+</div></footer>
+<script src="/navadara/assets/js/site.js?v=mvv5u9c5"></script>
+<script src="/navadara/assets/js/app.js?v=mvv5u9c5"></script>
+</body>
+</html>

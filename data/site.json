@@ -1,0 +1,10 @@
+{
+  "name": "นวดารา",
+  "nameEn": "Nava Dara",
+  "tagline": "เปิดไพ่ทาโร่ออนไลน์ ฟรี",
+  "siteUrl": "https://stdsk99.github.io",
+  "base": "/navadara/",
+  "deck": { "folder": "placeholder", "ext": "svg" },
+  "gaId": "",
+  "adsEnabled": false
+}
