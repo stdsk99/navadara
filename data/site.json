@@ -5,8 +5,8 @@
   "siteUrl": "https://stdsk99.github.io",
   "base": "/navadara/",
   "deck": {
-    "folder": "placeholder",
-    "ext": "svg"
+    "folder": "navadara",
+    "ext": "webp"
   },
   "gaId": "",
   "adsEnabled": false,
