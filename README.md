@@ -21,9 +21,12 @@ node tools/build.mjs
 
 ## เปลี่ยนชุดภาพไพ่
 
-1. วางภาพใน `decks/navadara/` (เช่น `major-00.webp`, `back.webp`)
-2. แก้ `data/site.json` เป็น `"deck": { "folder": "navadara", "ext": "webp" }`
-3. รัน `node tools/build.mjs`
+```
+python3 -I tools/import_deck.py <ไฟล์.zip หรือโฟลเดอร์ภาพ> [ชื่อชุด]
+```
+
+สคริปต์จะตรวจว่าภาพครบ 23 ไฟล์ (`back` + `major-00` ถึง `major-21`) ตัดสัดส่วนเป็น 2:3
+ย่อเป็น 600 × 900 px แปลงเป็น WebP ใส่ใน `decks/<ชื่อชุด>/` สลับ `data/site.json` และสร้างหน้าเว็บใหม่ให้
 
 ## เมื่อซื้อโดเมน
 
