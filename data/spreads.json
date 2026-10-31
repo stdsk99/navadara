@@ -1,17 +1,130 @@
 [
-  { "id": "daily", "name": "ไพ่ประจำวัน", "desc": "1 ใบ ดูพลังของวันนี้", "enabled": true,
-    "positions": [ { "label": "พลังของวันนี้", "type": "present" } ] },
-  { "id": "past-present-future", "name": "อดีต ปัจจุบัน อนาคต", "desc": "3 ใบ", "enabled": false,
-    "positions": [ { "label": "อดีต", "type": "past" }, { "label": "ปัจจุบัน", "type": "present" }, { "label": "อนาคต", "type": "future" } ] },
-  { "id": "situation-obstacle-advice", "name": "สถานการณ์ อุปสรรค คำแนะนำ", "desc": "3 ใบ", "enabled": false,
-    "positions": [ { "label": "สถานการณ์", "type": "present" }, { "label": "อุปสรรค", "type": "obstacle" }, { "label": "คำแนะนำ", "type": "advice" } ] },
-  { "id": "love", "name": "ความรัก", "desc": "5 ใบ", "enabled": false,
-    "positions": [ { "label": "เรา", "type": "self" }, { "label": "เขา", "type": "other" }, { "label": "ความสัมพันธ์", "type": "present" }, { "label": "อุปสรรค", "type": "obstacle" }, { "label": "แนวโน้ม", "type": "future" } ] },
-  { "id": "celtic-cross", "name": "Celtic Cross", "desc": "10 ใบ ดูแบบละเอียด", "enabled": false,
+  {
+    "id": "daily",
+    "name": "ไพ่ประจำวัน",
+    "desc": "1 ใบ ดูพลังของวันนี้",
+    "enabled": true,
     "positions": [
-      { "label": "สถานการณ์ปัจจุบัน", "type": "present" }, { "label": "สิ่งที่ขวาง", "type": "obstacle" },
-      { "label": "รากฐาน", "type": "past" }, { "label": "อดีตที่ผ่านมา", "type": "past" },
-      { "label": "สิ่งที่คาดไว้", "type": "present" }, { "label": "อนาคตอันใกล้", "type": "future" },
-      { "label": "ตัวเรา", "type": "self" }, { "label": "สิ่งแวดล้อม", "type": "other" },
-      { "label": "ความหวังและความกลัว", "type": "advice" }, { "label": "ผลลัพธ์สุดท้าย", "type": "outcome" } ] }
+      {
+        "label": "พลังของวันนี้",
+        "type": "present"
+      }
+    ]
+  },
+  {
+    "id": "past-present-future",
+    "name": "อดีต ปัจจุบัน อนาคต",
+    "desc": "3 ใบ",
+    "enabled": true,
+    "positions": [
+      {
+        "label": "อดีต",
+        "type": "past"
+      },
+      {
+        "label": "ปัจจุบัน",
+        "type": "present"
+      },
+      {
+        "label": "อนาคต",
+        "type": "future"
+      }
+    ]
+  },
+  {
+    "id": "situation-obstacle-advice",
+    "name": "สถานการณ์ อุปสรรค คำแนะนำ",
+    "desc": "3 ใบ",
+    "enabled": true,
+    "positions": [
+      {
+        "label": "สถานการณ์",
+        "type": "present"
+      },
+      {
+        "label": "อุปสรรค",
+        "type": "obstacle"
+      },
+      {
+        "label": "คำแนะนำ",
+        "type": "advice"
+      }
+    ]
+  },
+  {
+    "id": "love",
+    "name": "ความรัก",
+    "desc": "5 ใบ",
+    "enabled": false,
+    "positions": [
+      {
+        "label": "เรา",
+        "type": "self"
+      },
+      {
+        "label": "เขา",
+        "type": "other"
+      },
+      {
+        "label": "ความสัมพันธ์",
+        "type": "present"
+      },
+      {
+        "label": "อุปสรรค",
+        "type": "obstacle"
+      },
+      {
+        "label": "แนวโน้ม",
+        "type": "future"
+      }
+    ]
+  },
+  {
+    "id": "celtic-cross",
+    "name": "Celtic Cross",
+    "desc": "10 ใบ ดูแบบละเอียด",
+    "enabled": false,
+    "positions": [
+      {
+        "label": "สถานการณ์ปัจจุบัน",
+        "type": "present"
+      },
+      {
+        "label": "สิ่งที่ขวาง",
+        "type": "obstacle"
+      },
+      {
+        "label": "รากฐาน",
+        "type": "past"
+      },
+      {
+        "label": "อดีตที่ผ่านมา",
+        "type": "past"
+      },
+      {
+        "label": "สิ่งที่คาดไว้",
+        "type": "present"
+      },
+      {
+        "label": "อนาคตอันใกล้",
+        "type": "future"
+      },
+      {
+        "label": "ตัวเรา",
+        "type": "self"
+      },
+      {
+        "label": "สิ่งแวดล้อม",
+        "type": "other"
+      },
+      {
+        "label": "ความหวังและความกลัว",
+        "type": "advice"
+      },
+      {
+        "label": "ผลลัพธ์สุดท้าย",
+        "type": "outcome"
+      }
+    ]
+  }
 ]

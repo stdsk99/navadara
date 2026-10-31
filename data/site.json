@@ -4,7 +4,23 @@
   "tagline": "เปิดไพ่ทาโร่ออนไลน์ ฟรี",
   "siteUrl": "https://stdsk99.github.io",
   "base": "/navadara/",
-  "deck": { "folder": "placeholder", "ext": "svg" },
+  "deck": {
+    "folder": "placeholder",
+    "ext": "svg"
+  },
   "gaId": "",
-  "adsEnabled": false
+  "adsEnabled": false,
+  "contactEmail": "",
+  "affiliate": [
+    {
+      "title": "",
+      "url": "",
+      "note": ""
+    }
+  ],
+  "tip": {
+    "title": "สนับสนุนนวดารา",
+    "note": "",
+    "promptpayImage": ""
+  }
 }

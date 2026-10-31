@@ -2,8 +2,10 @@
 """นำเข้าชุดภาพไพ่ใหม่ แปลงเป็น WebP ขนาดมาตรฐาน แล้วสลับเว็บไปใช้ชุดนั้น
 
 ใช้:  python3 -I tools/import_deck.py <ไฟล์.zip หรือโฟลเดอร์ภาพ> [ชื่อชุด]
-ชื่อไฟล์ที่รับได้: major-00.png ... major-21.png และ back.png
-(รับ .png .jpg .jpeg .webp และชื่อแบบ 00.png, 0.png, major-0.png ก็ได้)
+ชื่อไฟล์ที่รับได้: back, major-00 ... major-21, wands-01 ... wands-14,
+cups-01 ... cups-14, swords-01 ... swords-14, pentacles-01 ... pentacles-14
+(รับ .png .jpg .jpeg .webp และชื่อแบบ 00.png, 0.png, major-0.png, wands-1.png ก็ได้)
+ส่งมาไม่ครบได้ ใบที่ยังไม่มีภาพจะใช้ภาพชั่วคราวไปก่อน
 """
 import json
 import re
@@ -20,7 +22,8 @@ ROOT = Path(__file__).resolve().parent.parent
 W, H = 600, 900          # ขนาดภาพที่ใช้บนเว็บ (2:3)
 QUALITY = 82
 EXTS = {".png", ".jpg", ".jpeg", ".webp"}
-NEEDED = ["back"] + [f"major-{i:02d}" for i in range(22)]
+SUITS = ["wands", "cups", "swords", "pentacles"]
+NEEDED = ["back"] + [f"major-{i:02d}" for i in range(22)] + [f"{s}-{i:02d}" for s in SUITS for i in range(1, 15)]
 
 
 def key_for(name: str):
@@ -30,6 +33,9 @@ def key_for(name: str):
     m = re.fullmatch(r"(?:major[-_ ]?)?(\d{1,2})", stem)
     if m and int(m.group(1)) <= 21:
         return f"major-{int(m.group(1)):02d}"
+    m = re.fullmatch(r"(wands|cups|swords|pentacles)[-_ ]?(\d{1,2})", stem)
+    if m and 1 <= int(m.group(2)) <= 14:
+        return f"{m.group(1)}-{int(m.group(2)):02d}"
     return None
 
 
@@ -90,14 +96,15 @@ def main():
         sys.exit("ชื่อชุดใช้ได้เฉพาะ a-z 0-9 และ -")
     with tempfile.TemporaryDirectory() as tmp:
         found, unknown = collect(src, Path(tmp))
-        missing = [k for k in NEEDED if k not in found]
         for u in unknown:
             print(f"  ? ไม่รู้จักชื่อไฟล์ {u} (ข้าม)")
-        if missing:
-            sys.exit("ภาพยังไม่ครบ ขาด: " + ", ".join(missing))
+        if not found:
+            sys.exit("ไม่พบภาพที่ตั้งชื่อถูกต้องเลย")
         dest = ROOT / "decks" / deck
         dest.mkdir(parents=True, exist_ok=True)
         for k in NEEDED:
+            if k not in found:
+                continue
             note = convert(found[k], dest / f"{k}.webp")
             print(f"  ✓ {k}.webp{note}")
     cfg_path = ROOT / "data" / "site.json"
@@ -105,7 +112,11 @@ def main():
     cfg["deck"] = {"folder": deck, "ext": "webp"}
     cfg_path.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     subprocess.run(["node", str(ROOT / "tools" / "build.mjs")], check=True)
-    print(f"เปลี่ยนเว็บไปใช้ชุดภาพ '{deck}' แล้ว")
+    have = [k for k in NEEDED if (dest / f"{k}.webp").exists()]
+    missing = [k for k in NEEDED if k not in have]
+    print(f"เปลี่ยนเว็บไปใช้ชุดภาพ '{deck}' แล้ว มีภาพจริง {len(have)}/{len(NEEDED)} ใบ")
+    if missing:
+        print("ยังใช้ภาพชั่วคราว: " + ", ".join(missing))
 
 
 if __name__ == "__main__":
