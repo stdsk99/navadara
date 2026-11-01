@@ -343,8 +343,8 @@
 
   /* ---------- boot ---------- */
   Promise.all([
-    fetch(CFG.base + "data/cards.json").then(function (r) { return r.json(); }),
-    fetch(CFG.base + "data/spreads.json").then(function (r) { return r.json(); })
+    fetch(CFG.base + "data/cards.json?v=" + CFG.v).then(function (r) { return r.json(); }),
+    fetch(CFG.base + "data/spreads.json?v=" + CFG.v).then(function (r) { return r.json(); })
   ]).then(function (res) {
     state.cards = res[0]; state.spreads = res[1];
     state.spread = state.spreads.filter(function (s) { return s.enabled; })[0];

@@ -96,7 +96,7 @@ const supportBlock = () => {
 function page({ rel, title, desc, body, active = "", scripts = [], image = deckImg("back") }) {
   const url = site.siteUrl + B + rel.replace(/index\.html$/, "");
   const fullTitle = title ? `${title} | ${site.name}` : `${site.name} — ${site.tagline}`;
-  const cfg = { base: B, back: deckImg("back"), gaId: site.gaId, adsEnabled: site.adsEnabled, name: site.name, siteUrl: site.siteUrl };
+  const cfg = { v: VERSION, base: B, back: deckImg("back"), gaId: site.gaId, adsEnabled: site.adsEnabled, name: site.name, siteUrl: site.siteUrl };
   const nav = (href, label, key, cls = "") => `<a href="${B}${href}"${active === key ? ' aria-current="page"' : ""}${cls ? ` class="${cls}"` : ""}>${label}</a>`;
   return `<!doctype html>
 <html lang="th">
