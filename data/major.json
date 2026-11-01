@@ -5,7 +5,7 @@
   "num": 0,
   "slug": "the-fool",
   "name": "The Fool",
-  "name_th": "คนโง่",
+  "name_th": "คนหนุ่มสาว",
   "up": {
    "kw": [
     "การเริ่มต้นใหม่",
@@ -59,7 +59,7 @@
   "num": 1,
   "slug": "the-magician",
   "name": "The Magician",
-  "name_th": "นักมายากล",
+  "name_th": "นักเวท",
   "up": {
    "kw": [
     "ความสามารถ",
@@ -113,7 +113,7 @@
   "num": 2,
   "slug": "the-high-priestess",
   "name": "The High Priestess",
-  "name_th": "นักบวชหญิง",
+  "name_th": "มหาปุโรหิตหญิง",
   "up": {
    "kw": [
     "สัญชาตญาณ",
@@ -275,7 +275,7 @@
   "num": 5,
   "slug": "the-hierophant",
   "name": "The Hierophant",
-  "name_th": "พระสังฆราช",
+  "name_th": "นักบวชใหญ่",
   "up": {
    "kw": [
     "ประเพณี",
@@ -437,7 +437,7 @@
   "num": 8,
   "slug": "strength",
   "name": "Strength",
-  "name_th": "พละกำลัง",
+  "name_th": "พลังใจ",
   "up": {
    "kw": [
     "ความกล้าหาญ",
@@ -653,7 +653,7 @@
   "num": 12,
   "slug": "the-hanged-man",
   "name": "The Hanged Man",
-  "name_th": "คนแขวน",
+  "name_th": "ผู้ถูกแขวน",
   "up": {
    "kw": [
     "การรอคอย",
@@ -707,7 +707,7 @@
   "num": 13,
   "slug": "death",
   "name": "Death",
-  "name_th": "ความตาย",
+  "name_th": "การเปลี่ยนผ่าน",
   "up": {
    "kw": [
     "การสิ้นสุด",
@@ -815,7 +815,7 @@
   "num": 15,
   "slug": "the-devil",
   "name": "The Devil",
-  "name_th": "ปีศาจ",
+  "name_th": "พันธนาการ",
   "up": {
    "kw": [
     "พันธนาการ",
@@ -977,7 +977,7 @@
   "num": 18,
   "slug": "the-moon",
   "name": "The Moon",
-  "name_th": "ดวงจันทร์",
+  "name_th": "พระจันทร์",
   "up": {
    "kw": [
     "ความไม่ชัดเจน",
