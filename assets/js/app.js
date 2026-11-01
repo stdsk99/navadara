@@ -30,7 +30,7 @@
       b.appendChild(el("span", sp.enabled ? null : "soon", sp.enabled ? sp.desc : sp.desc + " · เร็วๆ นี้"));
       b.disabled = !sp.enabled;
       b.setAttribute("aria-pressed", state.spread === sp ? "true" : "false");
-      b.addEventListener("click", function () { state.spread = sp; renderSetup(); });
+      b.addEventListener("click", function () { state.spread = sp; if (sp.id === "love") state.cat = "love"; renderSetup(); });
       sl.appendChild(b);
     });
     var cl = $("#cats"); cl.innerHTML = "";
@@ -40,6 +40,7 @@
       b.addEventListener("click", function () { state.cat = c.id; renderSetup(); });
       cl.appendChild(b);
     });
+    renderHistory();
     var saved = null;
     try { saved = JSON.parse(store.get("nava.daily") || "null"); } catch (e) {}
     var note = $("#today-note"); note.innerHTML = "";
@@ -141,11 +142,12 @@
     var stage = $("#stage");
     $("#stage-msg").textContent = "";
     var row = el("div", "spread-row n" + need);
+    if (need > 3) stage.classList.add("grow");
     var flips = state.picks.map(function (p, i) {
       var cell = el("div", "spread-cell");
       var f = flipCard(p, "");
       cell.appendChild(f);
-      if (need > 1) cell.appendChild(el("div", "cell-label", state.spread.positions[i].label));
+      if (need > 1) cell.appendChild(el("div", "cell-label", (need > 3 ? (i + 1) + ". " : "") + state.spread.positions[i].label));
       row.appendChild(cell);
       return f;
     });
@@ -153,10 +155,12 @@
     await wait(350);
     for (var i = 0; i < flips.length; i++) {
       flips[i].classList.add("flipped"); sound.flip();
-      await wait(need > 1 ? 700 : 1100);
+      await wait(need > 5 ? 420 : need > 1 ? 650 : 1100);
     }
     await wait(400);
+    stage.classList.remove("grow");
     saveDaily();
+    saveHistory();
     window.navaTrack("reading_done", { spread: state.spread.id, category: state.cat });
     show("result"); renderResult();
     $("#step-result").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
@@ -190,13 +194,14 @@
       state.picks.forEach(function (p, i) {
         var a = el("a", "spread-cell"); a.href = "#pos-" + i;
         a.appendChild(flipCard(p, "flipped"));
-        a.appendChild(el("div", "cell-label", state.spread.positions[i].label));
+        a.appendChild(el("div", "cell-label", (state.picks.length > 3 ? (i + 1) + ". " : "") + state.spread.positions[i].label));
         a.appendChild(el("div", "cell-name", p.card.name_th + (p.rev ? " (กลับหัว)" : "")));
         row.appendChild(a);
       });
       top.appendChild(row);
     }
     box.appendChild(top);
+    if (multi) box.appendChild(renderSummary());
 
     state.picks.forEach(function (d, i) {
       var pos = state.spread.positions[i];
@@ -205,6 +210,7 @@
       var head = el("div", "result-head");
       if (!multi) head.appendChild(flipCard(d, "flipped"));
       head.appendChild(el("div", "pos", (multi ? "ใบที่ " + (i + 1) + " · " : "") + pos.label));
+      if (multi) { var mini = flipCard(d, "flipped mini"); head.insertBefore(mini, head.firstChild); }
       head.appendChild(el("h2", null, d.card.name_th));
       var sub = el("div", "muted"); sub.textContent = d.card.name + " · ";
       sub.appendChild(el("span", "badge", d.rev ? "ไพ่กลับหัว" : "ไพ่ตั้ง"));
@@ -247,6 +253,92 @@
     act.appendChild(again); act.appendChild(lib); box.appendChild(act);
   }
 
+  /* ---------- บทสรุปภาพรวม ---------- */
+  var SUIT_TEXT = {
+    wands: ["ไม้เท้า", "เรื่องนี้ขับเคลื่อนด้วยไฟและการลงมือทำ ความกระตือรือร้นและความกล้าเป็นกุญแจสำคัญ"],
+    cups: ["ถ้วย", "เรื่องนี้เกี่ยวข้องกับความรู้สึกและความสัมพันธ์เป็นหลัก ฟังหัวใจตัวเองและคนรอบข้างให้ดี"],
+    swords: ["ดาบ", "เรื่องนี้เต็มไปด้วยความคิด การตัดสินใจ และอาจมีความขัดแย้ง ใช้เหตุผลและสื่อสารให้ชัด"],
+    pentacles: ["เหรียญ", "เรื่องนี้ผูกกับเงิน งาน และความมั่นคงในชีวิตจริง ค่อยๆ วางแผนอย่างเป็นรูปธรรม"]
+  };
+  var RANK_TEXT = {
+    1: "ไพ่หนึ่ง (Ace) ออกซ้ำ เป็นสัญญาณของการเริ่มต้นใหม่ที่ชัดเจน",
+    2: "ไพ่สองออกซ้ำ เรื่องนี้เกี่ยวกับการเลือกและการหาสมดุลระหว่างสองสิ่ง",
+    3: "ไพ่สามออกซ้ำ การร่วมมือและการเติบโตจะพาไปข้างหน้า",
+    4: "ไพ่สี่ออกซ้ำ ถึงเวลาสร้างความมั่นคงและพักตั้งหลัก",
+    5: "ไพ่ห้าออกซ้ำ ช่วงนี้มีความท้าทายหรือความไม่ลงตัวที่ต้องผ่านไปให้ได้",
+    6: "ไพ่หกออกซ้ำ เป็นช่วงของการปรับตัว การให้และการเยียวยา",
+    7: "ไพ่เจ็ดออกซ้ำ ต้องใช้ความอดทนและประเมินสถานการณ์ให้ดี",
+    8: "ไพ่แปดออกซ้ำ จะมีความเคลื่อนไหวและการเปลี่ยนแปลงเกิดขึ้น",
+    9: "ไพ่เก้าออกซ้ำ เรื่องนี้ใกล้ถึงจุดสิ้นสุดของวงจรแล้ว",
+    10: "ไพ่สิบออกซ้ำ วงจรหนึ่งกำลังจบเพื่อเริ่มบทใหม่",
+    11: "ไพ่เด็กถือ (Page) ออกซ้ำ จะมีข่าวสารหรือการเรียนรู้สิ่งใหม่",
+    12: "ไพ่อัศวินออกซ้ำ เรื่องจะเคลื่อนไหวเร็ว มีคนหรือเหตุการณ์ที่ผลักดันให้ขยับ",
+    13: "ไพ่ราชินีออกซ้ำ ผู้หญิงหรือพลังแห่งความเข้าใจมีบทบาทสำคัญ",
+    14: "ไพ่ราชาออกซ้ำ ผู้มีอำนาจหรือการตัดสินใจที่เด็ดขาดมีบทบาทสำคัญ"
+  };
+  function renderSummary() {
+    var picks = state.picks, n = picks.length, out = [];
+    var major = picks.filter(function (p) { return p.card.arcana === "major"; }).length;
+    var rev = picks.filter(function (p) { return p.rev; }).length;
+    if (major === 0) out.push("ไม่มีไพ่ Major เลย เรื่องนี้เป็นเรื่องในชีวิตประจำวันที่คุณควบคุมได้ด้วยการกระทำของตัวเอง");
+    else if (major >= Math.ceil(n / 2)) out.push("ไพ่ Major ออกมา " + major + " จาก " + n + " ใบ เรื่องนี้เป็นจุดเปลี่ยนสำคัญของชีวิต มีพลังที่ใหญ่กว่าตัวคุณเข้ามาเกี่ยวข้อง");
+    else out.push("มีไพ่ Major " + major + " ใบ เรื่องนี้มีทั้งส่วนที่เป็นบทเรียนสำคัญและส่วนที่คุณจัดการได้เอง");
+    var cnt = {};
+    picks.forEach(function (p) { if (p.card.suit) cnt[p.card.suit] = (cnt[p.card.suit] || 0) + 1; });
+    var top = Object.keys(cnt).sort(function (a, b) { return cnt[b] - cnt[a]; });
+    if (top.length && cnt[top[0]] >= 2 && (top.length === 1 || cnt[top[0]] > cnt[top[1]])) out.push("ชุด" + SUIT_TEXT[top[0]][0] + "ออกมากที่สุด (" + cnt[top[0]] + " ใบ) " + SUIT_TEXT[top[0]][1]);
+    if (rev === 0) out.push("ไม่มีไพ่กลับหัวเลย พลังของเรื่องนี้ไหลลื่น เป็นจังหวะที่ดีในการลงมือ");
+    else if (rev >= Math.ceil(n / 2)) out.push("ไพ่กลับหัว " + rev + " ใบ พลังหลายส่วนยังติดขัดหรือหันเข้าหาตัวเอง ควรทบทวนและแก้ที่ใจก่อนขยับ");
+    var ranks = {};
+    picks.forEach(function (p) { if (p.card.arcana === "minor") ranks[p.card.num] = (ranks[p.card.num] || 0) + 1; });
+    Object.keys(ranks).forEach(function (k) { if (ranks[k] >= 2) out.push(RANK_TEXT[k]); });
+    var last = picks[n - 1], lastPos = state.spread.positions[n - 1];
+    out.push("ไพ่ใบสุดท้ายในตำแหน่ง" + lastPos.label + "คือ " + last.card.name_th + (last.rev
+      ? " แบบกลับหัว เป็นสัญญาณให้ระวังและปรับแก้ตามคำแนะนำ เพื่อให้ผลลัพธ์ออกมาดีขึ้น"
+      : " แบบตั้ง แนวโน้มโดยรวมเป็นไปในทางที่ดี ถ้าคุณเดินตามสิ่งที่ไพ่ชี้ทาง"));
+    var box = el("section", "summary");
+    box.appendChild(el("h3", null, "บทสรุปภาพรวม"));
+    out.forEach(function (t) { box.appendChild(el("p", null, t)); });
+    return box;
+  }
+
+  /* ---------- ประวัติการเปิดไพ่ (เก็บในเครื่องผู้ใช้) ---------- */
+  function loadHistory() { try { return JSON.parse(store.get("nava.history") || "[]"); } catch (e) { return []; } }
+  function saveHistory() {
+    var h = loadHistory();
+    h.unshift({ t: Date.now(), s: state.spread.id, c: state.cat, q: state.question, p: state.picks.map(function (p) { return [p.card.id, p.rev ? 1 : 0]; }) });
+    store.set("nava.history", JSON.stringify(h.slice(0, 30)));
+  }
+  function renderHistory() {
+    var wrap = $("#history"); if (!wrap) return;
+    wrap.innerHTML = "";
+    var h = loadHistory().filter(function (x) { return spreadById(x.s) && x.p.every(function (q) { return cardById(q[0]); }); });
+    if (!h.length) return;
+    var det = el("details", "history");
+    det.appendChild(el("summary", null, "ประวัติการเปิดไพ่ของคุณ (" + h.length + ")"));
+    var ul = el("ul");
+    h.forEach(function (x) {
+      var li = el("li"); var a = el("a"); a.href = "#";
+      var d = new Date(x.t);
+      a.appendChild(el("span", "h-date", d.toLocaleDateString("th-TH", { day: "numeric", month: "short" }) + " " + d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })));
+      a.appendChild(el("b", null, spreadById(x.s).name + " · " + catLabel(x.c)));
+      a.appendChild(el("span", "h-cards", x.p.map(function (q) { return cardById(q[0]).name_th + (q[1] ? " (กลับหัว)" : ""); }).join(" · ")));
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        state.spread = spreadById(x.s); state.cat = x.c; state.question = x.q || "";
+        state.picks = x.p.map(function (q) { return { card: cardById(q[0]), rev: !!q[1] }; });
+        show("result"); renderResult();
+        $("#step-result").scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      });
+      li.appendChild(a); ul.appendChild(li);
+    });
+    det.appendChild(ul);
+    var clr = el("button", "btn ghost small-btn", "ล้างประวัติ"); clr.type = "button";
+    clr.addEventListener("click", function () { if (window.confirm("ลบประวัติการเปิดไพ่ทั้งหมดในเครื่องนี้?")) { store.set("nava.history", "[]"); renderHistory(); } });
+    det.appendChild(clr);
+    wrap.appendChild(det);
+  }
+
   /* ---------- ภาพสำหรับแชร์ (สร้างในเครื่อง ไม่ส่งข้อมูลออก) ---------- */
   function loadImg(src) {
     return new Promise(function (res) { var i = new Image(); i.onload = function () { res(i); }; i.onerror = function () { res(null); }; i.src = src; });
@@ -285,9 +377,10 @@
     var withQ = state.question && document.getElementById("share-q") && document.getElementById("share-q").checked;
     if (withQ) { ctx.fillStyle = ink; ctx.font = "italic 30px " + sans; y += 10 + 40 * wrapText(ctx, "“" + state.question + "”", W / 2, y + 20, W - 220, 40, 2); }
     var n = state.picks.length;
+    var imgs = await Promise.all(state.picks.map(function (p) { return loadImg(p.card.img); }));
+    if (n > 3) { drawGrid(ctx, imgs, y + 30, W, H, gold, ink, muted, sans, serif); return finishShare(cv, preview, btn, muted, sans, W, H); }
     var cw = n === 1 ? 380 : 260, ch = cw * 1.5, gap = 40;
     var total = n * cw + (n - 1) * gap, x0 = (W - total) / 2, cy = y + 40;
-    var imgs = await Promise.all(state.picks.map(function (p) { return loadImg(p.card.img); }));
     state.picks.forEach(function (p, i) {
       var x = x0 + i * (cw + gap), im = imgs[i];
       ctx.save();
@@ -316,7 +409,35 @@
       ctx.fillStyle = gold; ctx.font = "28px " + sans;
       wrapText(ctx, state.picks.map(function (p) { return (p.rev ? p.card.rev : p.card.up).kw[0]; }).join("  →  "), W / 2, by, W - 200, 40, 2);
     }
-    ctx.fillStyle = muted; ctx.font = "26px " + sans;
+    return finishShare(cv, preview, btn, muted, sans, W, H);
+  }
+  function drawGrid(ctx, imgs, y0, W, H, gold, ink, muted, sans, serif) {
+    var n = state.picks.length, cols = n === 5 ? 3 : 5, rows = Math.ceil(n / cols);
+    var cw = n === 5 ? 230 : 168, ch = cw * 1.5, gapX = n === 5 ? 50 : 24, rowH = ch + (n === 5 ? 110 : 96);
+    // จัดตารางให้อยู่กลางพื้นที่ระหว่างหัวภาพกับท้ายภาพ
+    var avail = H - 150 - y0, used = rows * rowH;
+    if (avail > used) y0 += (avail - used) / 2 - 20;
+    function fitText(t, maxW, size, font) {
+      ctx.font = size + "px " + font;
+      while (ctx.measureText(t).width > maxW && size > 14) { size -= 1; ctx.font = size + "px " + font; }
+    }
+    state.picks.forEach(function (p, i) {
+      var r = Math.floor(i / cols), k = i % cols, inRow = Math.min(cols, n - r * cols);
+      var x0 = (W - (inRow * cw + (inRow - 1) * gapX)) / 2, x = x0 + k * (cw + gapX), cy = y0 + 20 + r * rowH, im = imgs[i];
+      ctx.save();
+      if (p.rev) { ctx.translate(x + cw / 2, cy + ch / 2); ctx.rotate(Math.PI); ctx.translate(-(x + cw / 2), -(cy + ch / 2)); }
+      if (im) ctx.drawImage(im, x, cy, cw, ch); else { ctx.fillStyle = "#141a2e"; ctx.fillRect(x, cy, cw, ch); }
+      ctx.restore();
+      ctx.strokeStyle = gold; ctx.lineWidth = 2; ctx.strokeRect(x, cy, cw, ch);
+      ctx.fillStyle = gold; fitText((i + 1) + ". " + state.spread.positions[i].label, cw + gapX - 6, n === 5 ? 24 : 20, sans);
+      ctx.fillText((i + 1) + ". " + state.spread.positions[i].label, x + cw / 2, cy + ch + 34);
+      ctx.fillStyle = ink; ctx.font = "500 " + (n === 5 ? 28 : 22) + "px " + serif;
+      ctx.fillText(p.card.name_th + (p.rev ? " ↺" : ""), x + cw / 2, cy + ch + (n === 5 ? 72 : 64));
+    });
+  }
+  async function finishShare(cv, preview, btn, muted, sans, W, H) {
+    var ctx = cv.getContext("2d");
+    ctx.textAlign = "center"; ctx.fillStyle = muted; ctx.font = "26px " + sans;
     ctx.fillText("เปิดไพ่ฟรีที่ " + (CFG.siteUrl + CFG.base).replace(/^https?:\/\//, "").replace(/\/$/, ""), W / 2, H - 90);
 
     var blob = await new Promise(function (r) { try { cv.toBlob(r, "image/png"); } catch (e) { r(null); } });

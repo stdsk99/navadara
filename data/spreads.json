@@ -55,7 +55,7 @@
     "id": "love",
     "name": "ความรัก",
     "desc": "5 ใบ",
-    "enabled": false,
+    "enabled": true,
     "positions": [
       {
         "label": "เรา",
@@ -83,7 +83,7 @@
     "id": "celtic-cross",
     "name": "Celtic Cross",
     "desc": "10 ใบ ดูแบบละเอียด",
-    "enabled": false,
+    "enabled": true,
     "positions": [
       {
         "label": "สถานการณ์ปัจจุบัน",
