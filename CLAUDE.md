@@ -14,4 +14,5 @@
 10. For database or data-file changes, inspect the existing schema first. Never create duplicate tables, columns or fields.
 11. Never overwrite data or run destructive operations without explicit approval. Show the command and a backup step first.
 12. Discuss the plan first. Start implementing only after I reply "ทำได้".
+    After "ทำได้", work on a new branch, open a Pull Request, and merge it yourself once checks pass. Then report what changed.
 13. Reply in Thai.
